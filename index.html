@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina Cardio HIIT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen no-select">
+
+<div id="app-container" class="w-full max-w-md mx-auto p-4">
+
+    <!-- Pantalla de Inicio -->
+    <div id="start-screen" class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-cyan-400 mb-4">Rutina Cardio HIIT</h1>
+        <p class="text-gray-300 mb-8">Prepárate para sudar. Presiona el botón para comenzar tu entrenamiento guiado.</p>
+        <button id="start-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-8 rounded-lg text-xl shadow-lg transition-transform transform hover:scale-105">
+            Empezar Rutina
+        </button>
+    </div>
+
+    <!-- Pantalla de Entrenamiento -->
+    <div id="workout-screen" class="hidden text-center">
+        <div id="info-container" class="mb-6">
+            <p id="next-exercise-label" class="text-lg text-gray-400 h-6"></p>
+            <h2 id="exercise-name" class="text-3xl md:text-4xl font-bold capitalize h-20 flex items-center justify-center"></h2>
+        </div>
+
+        <!-- Círculo del Temporizador -->
+        <div id="timer-container" class="relative w-64 h-64 mx-auto mb-6">
+            <!-- CORRECCIÓN: Se usa viewBox y coordenadas absolutas para mayor consistencia en navegadores -->
+            <svg class="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" stroke-width="10" stroke="#374151" fill="transparent" />
+                <circle id="timer-progress" cx="50" cy="50" r="45" stroke-width="10" fill="transparent" class="timer-circle" />
+            </svg>
+            <div id="timer-display" class="absolute inset-0 flex items-center justify-center text-6xl font-black"></div>
+        </div>
+
+        <!-- Controles -->
+        <div class="space-y-4">
+            <button id="add-10s-btn" class="w-full bg-gray-700 hover:bg-gray-600 text-cyan-300 font-semibold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">
+                +10 segundos
+            </button>
+            <div class="flex space-x-4">
+                <button id="pause-resume-btn" class="w-1/2 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">
+                    Pausar
+                </button>
+                <button id="end-btn" class="w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">
+                    Terminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Finalización -->
+    <div id="finish-screen" class="hidden text-center">
+        <div class="text-6xl mb-4">🎉</div>
+        <h1 class="text-4xl font-bold text-cyan-400 mb-4">¡Rutina Completada!</h1>
+        <p class="text-gray-300 mb-8">¡Excelente trabajo! Has completado el entrenamiento de hoy. ¡No olvides estirar bien y recuperarte!</p>
+        <button id="restart-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-8 rounded-lg text-xl shadow-lg transition-transform transform hover:scale-105">
+            Hacerlo de Nuevo
+        </button>
+    </div>
+
+</div>
+</body>
+<script src="script.js"></script>
+</html>
