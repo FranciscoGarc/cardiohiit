@@ -19,10 +19,14 @@ const endBtn = document.getElementById('end-btn');
 // --- DEFINICIÓN DE LA RUTINA ---
 const routine = [
     { name: "Movilidad Articular Dinámica", duration: 60, type: "warmup" },
-    { name: "Jumping Jacks Suaves", duration: 60, type: "warmup" },
-    { name: "Caminata del Gusano", duration: 60, type: "warmup" },
-    { name: "Rodillas Altas Marchando", duration: 60, type: "warmup" },
-    { name: "Patadas de Glúteo Suaves", duration: 60, type: "warmup" },
+    { name: "Jumping Jacks Suaves", duration: 30, type: "warmup" },
+    { name: "Saltos de tijera hacia delante", duration: 30, type: "warmup" },
+    { name: "Rotación de brazos", duration: 30, type: "warmup" },
+    { name: "Marcha en el Lugar", duration: 30, type: "warmup" },
+    { name: "Círculos de Cadera", duration: 30, type: "warmup" },
+    { name: "Círculos de Rodillas", duration: 30, type: "warmup" },
+    { name: "Círculos de Tobillos", duration: 30, type: "warmup" },
+    { name: "Estocadas con giro de torso", duration: 30, type: "warmup" },
 
     { name: "Burpees", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
@@ -31,10 +35,9 @@ const routine = [
     { name: "Mountain Climbers", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Rodillas al Pecho", duration: 40, type: "exercise" },
-    { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Descanso Completo", duration: 60, type: "break" },
 
-    { name: "Zancadas hacia Atrás", duration: 40, type: "exercise" },
+    { name: "Saltos de caja", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Flexiones", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
@@ -42,37 +45,33 @@ const routine = [
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Plancha Lateral", duration: 20, type: "exercise" },
     { name: "Plancha Lateral", duration: 20, type: "exercise" },
-    { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Descanso Completo", duration: 60, type: "break" },
 
     { name: "Abdominales de Bicicleta", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Elevación de Piernas", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
-    { name: "Superman", duration: 40, type: "exercise" },
+    { name: "Russian twists", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Plancha", duration: 40, type: "exercise" },
-    { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Descanso Completo", duration: 60, type: "break" },
 
-    { name: "Sentadilla SUMO", duration: 40, type: "exercise" },
+    { name: "Flutter kicks", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
-    { name: "Good Mornings", duration: 40, type: "exercise" },
+    { name: "Sentadilla con Salto", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
-    { name: "Paso Lateral Activo", duration: 40, type: "exercise" },
+    { name: "Spider-man planks", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Talones al Glúteo", duration: 40, type: "exercise" },
-    { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Descanso Completo", duration: 60, type: "break" },
 
-    { name: "Saltos de Tijera", duration: 40, type: "exercise" },
+    { name: "Inchworm to push-up", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
-    { name: "Sentadilla con Peso Corporal", duration: 40, type: "exercise" },
+    { name: "Skater jumps", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
     { name: "Plancha con Toques de Hombro", duration: 40, type: "exercise" },
     { name: "Descanso Activo", duration: 20, type: "rest" },
-    { name: "Elevación de Gemelos", duration: 40, type: "exercise" },
-    { name: "Descanso Activo", duration: 20, type: "rest" },
+    { name: "Jumping Jacks", duration: 40, type: "exercise" },
     { name: "Descanso Completo", duration: 60, type: "break" },
 
     { name: "Marcha Suave o Caminata Lenta", duration: 120, type: "cooldown" },
@@ -105,6 +104,15 @@ function playSound(note, duration) {
     }
 }
 
+function skipWarmup() {
+    // Busca el primer índice cuyo tipo no sea "warmup"
+    const nextIndex = routine.findIndex(step => step.type !== "warmup");
+    if (nextIndex !== -1) {
+        currentStepIndex = nextIndex;
+        loadStep(currentStepIndex);
+    }
+}
+
 // --- LÓGICA DEL TEMPORIZADOR ---
 
 function startWorkout() {
@@ -131,14 +139,20 @@ function loadStep(index) {
     timeLeft = step.duration;
     initialDuration = step.duration;
 
-    // Inicializar el círculo
+    // Oculta el botón si ya no es calentamiento
+    const skipWarmupBtn = document.getElementById('skip-warmup-btn');
+    if (step.type !== "warmup") {
+        skipWarmupBtn.style.display = "none";
+    } else {
+        skipWarmupBtn.style.display = "block";
+    }
+
     timerProgressEl.style.strokeDasharray = CIRCUMFERENCE;
     timerProgressEl.style.strokeDashoffset = 0;
 
-
     updateUIForStep(step, index);
     startTimer();
-    playSound("C5", "0.1"); // Sonido para nuevo ejercicio
+    playSound("C5", "0.1");
 }
 
 function startTimer() {
@@ -235,3 +249,4 @@ restartBtn.addEventListener('click', resetWorkout);
 pauseResumeBtn.addEventListener('click', togglePauseResume);
 add10sBtn.addEventListener('click', add10Seconds);
 endBtn.addEventListener('click', endWorkout);
+document.getElementById('skip-warmup-btn').addEventListener('click', skipWarmup);
